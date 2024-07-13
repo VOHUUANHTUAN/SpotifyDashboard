@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spotify Data Visualization</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+
+<header>
+    <h1 class="header-title">Spotify Dashboard</h1>
+</header>
+
+<body>
+    <div class="containerchart">
+        <div class="pie-chart">
+            <h2 class="titleofchart">Percentage of Modes</h2>
+            <div class="legendandpiechart">
+                <div class="legend">
+                    <div><span class="legend-box major"></span> % Major</div>
+                    <div><span class="legend-box minor"></span> % Minor</div>
+                </div>
+                <div><svg id="pie-chart" width="200" height="200"></svg></div>
+            </div>
+        </div>
+        <div class="bar-chart">
+            <h2 class="titleofchart">Number of Songs by Key</h2>
+            <svg id="bar-chart"></svg>
+        </div>
+        <div class="line-chart">
+            <h2 class="titleofchart">Number of Songs by Month</h2>
+            <svg id="line-chart"></svg>
+        </div>
+
+    </div>
+
+    <script src="script_19120706.js"></script>
+</body>
+
+<footer></footer>
+
+</html>

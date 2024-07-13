@@ -1,0 +1,88 @@
+body {
+  background-image: url("background.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 100vh;
+  margin: 0;
+  margin: 0; /* Remove default margin */
+
+  color: white;
+}
+header {
+  margin-bottom: 20px; /* Optional: add margin to the bottom of the header */
+  text-align: center;
+}
+
+.header-title {
+  background: linear-gradient(to right, #1db954, #191414); /* Spotify colors */
+  background-clip: text; /* Standard property */
+  -webkit-background-clip: text; /* Safari */
+  -webkit-text-fill-color: transparent; /* Make text color transparent to show gradient */
+  font-size: 2.5em; /* Adjust size as needed */
+  margin: 0; /* Remove default margin */
+  display: inline-block; /* Necessary for background-clip */
+}
+
+.containerchart {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  margin: 10px;
+}
+
+.pie-chart,
+.line-chart,
+.bar-chart {
+  background-color: rgba(152, 251, 152, 0.1);
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.legendandpiechart {
+  display: flex;
+}
+
+.titleofchart {
+  text-align: center;
+  margin: 10px 0;
+  color: white;
+}
+
+.bar {
+  fill: rgb(151, 104, 154);
+}
+
+.axis-label {
+  font-size: 10px;
+  fill: white;
+}
+
+.legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.legend-box {
+  display: inline-block;
+  width: 15px;
+  height: 15px;
+  margin-right: 5px;
+  border-radius: 3px;
+}
+
+.major {
+  background-color: rgb(133, 219, 185);
+}
+
+.minor {
+  background-color: rgb(156, 231, 94);
+}
+
+.tooltip {
+  color: black;
+  z-index: 10;
+}
