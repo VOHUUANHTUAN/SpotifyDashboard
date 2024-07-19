@@ -16,7 +16,7 @@ header {
 }
 
 .header-title {
-  background: linear-gradient(to right, #1db954, #191414); /* Spotify colors */
+  background: linear-gradient(to right, #1db954, #ffffff); /* Spotify colors */
   background-clip: text; /* Standard property */
   -webkit-background-clip: text; /* Safari */
   -webkit-text-fill-color: transparent; /* Make text color transparent to show gradient */
