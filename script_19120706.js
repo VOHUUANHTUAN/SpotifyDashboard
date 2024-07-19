@@ -1,7 +1,7 @@
 // Define the dimensions of the SVG container for the bar chart
 const barMargin = { top: 20, right: 30, bottom: 50, left: 60 },
-    barWidth = 400 - barMargin.left - barMargin.right,
-    barHeight = 200 - barMargin.top - barMargin.bottom;
+    barWidth = 600 - barMargin.left - barMargin.right,
+    barHeight = 300 - barMargin.top - barMargin.bottom;
 
 const barSvg = d3.select("#bar-chart")
     .attr("width", barWidth + barMargin.left + barMargin.right)
@@ -18,8 +18,8 @@ barSvg.append("text")
     .style("font-weight", "bold");
 
 // Define the dimensions of the SVG container for the pie chart
-const pieWidth = 200,
-    pieHeight = 200,
+const pieWidth = 300,
+    pieHeight = 300,
     radius = Math.min(pieWidth, pieHeight) / 2;
 
 const pieSvg = d3.select("#pie-chart")
@@ -28,8 +28,8 @@ const pieSvg = d3.select("#pie-chart")
 
 // Define the dimensions of the SVG container for the line chart
 const lineMargin = { top: 20, right: 30, bottom: 50, left: 60 },
-    lineWidth = 400 - lineMargin.left - lineMargin.right,
-    lineHeight = 200 - lineMargin.top - lineMargin.bottom;
+    lineWidth = 600 - lineMargin.left - lineMargin.right,
+    lineHeight = 300 - lineMargin.top - lineMargin.bottom;
 
 const lineSvg = d3.select("#line-chart")
     .attr("width", lineWidth + lineMargin.left + lineMargin.right)
@@ -55,7 +55,7 @@ d3.csv("spotify-2023.csv").then(data => {
         .nice()
         .range([barHeight, 0]);
 
-    // Draw the bars with hover effects
+    // Draw the bars for the bar chart
     barSvg.selectAll(".bar")
         .data(keyCountsArray)
         .enter().append("rect")
@@ -64,49 +64,7 @@ d3.csv("spotify-2023.csv").then(data => {
         .attr("y", d => y(d.count))
         .attr("width", x.bandwidth())
         .attr("height", d => barHeight - y(d.count))
-        .attr("fill", "steelblue")
-        .on("mouseover", function (event, d) {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", "orange")
-                .attr("opacity", 0.7);
-            tooltip.style("opacity", 1)
-                .html(` ${d.count}`)
-                .style("left", (event.pageX + 5) + "px")
-                .style("top", (event.pageY - 28) + "px");
-        })
-        .on("mouseout", function () {
-            d3.select(this)
-                .transition()
-                .duration(200)
-                .attr("fill", "steelblue")
-                .attr("opacity", 1);
-            tooltip.style("opacity", 0);
-        });
-
-    // Add the x-axis
-    barSvg.append("g")
-        .attr("transform", `translate(0,${barHeight})`)
-        .call(d3.axisBottom(x))
-        .append("text")
-        .attr("class", "axis-label")
-        .attr("x", barWidth / 2)
-        .attr("y", 25)
-        .attr("fill", "black")
-        .text("Key");
-
-    // Add the y-axis
-    const yTicks = [0, 40, 80, 120, d3.max(keyCountsArray, d => d.count)];
-    barSvg.append("g")
-        .call(d3.axisLeft(y).tickValues(yTicks))
-        .append("text")
-        .attr("class", "axis-label")
-        .attr("transform", "rotate(-90)")
-        .attr("x", -barHeight / 2)
-        .attr("y", -35)
-        .attr("fill", "black")
-        .text("Count");
+        .attr("fill", "#69b3a2");
 
     // Process the data for the pie chart
     const modeCounts = d3.rollup(data, v => v.length, d => d.mode);
@@ -121,8 +79,8 @@ d3.csv("spotify-2023.csv").then(data => {
     const color = d3.scaleOrdinal()
         .domain(modePercentages.map(d => d.mode))
         .range([
-            "rgb(133, 219, 185)",
-            "rgb(156, 231, 94)"
+            "#00FF7F",
+            "#698B69"
         ]);
 
     // Set up the pie and arc generators
@@ -176,7 +134,6 @@ d3.csv("spotify-2023.csv").then(data => {
     // Sort months
     const monthOrder = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
     monthlyCountsArray.sort((a, b) => monthOrder.indexOf(a.month) - monthOrder.indexOf(b.month));
-    console.log(monthlyCountsArray);
 
     // Set up the x scale for the line chart
     const lineX = d3.scalePoint()
@@ -198,7 +155,7 @@ d3.csv("spotify-2023.csv").then(data => {
     lineSvg.append("path")
         .datum(monthlyCountsArray)
         .attr("fill", "none")
-        .attr("stroke", "#A67BCE")
+        .attr("stroke", "#CC33CC")
         .attr("stroke-width", 2)
         .attr("d", line);
 
@@ -214,10 +171,10 @@ d3.csv("spotify-2023.csv").then(data => {
         .text("Month");
 
     // Add the y-axis for the line chart
-    const yTicksl = [0, 40, 80, 120, d3.max(monthlyCountsArray, d => d.count)];
+    const yTicks = [0, 40, 80, 120, d3.max(monthlyCountsArray, d => d.count)];
 
     lineSvg.append("g")
-        .call(d3.axisLeft(lineY).tickValues(yTicksl))
+        .call(d3.axisLeft(lineY).tickValues(yTicks))
         .append("text")
         .attr("class", "axis-label")
         .attr("transform", "rotate(-90)")
@@ -225,4 +182,36 @@ d3.csv("spotify-2023.csv").then(data => {
         .attr("y", -35)
         .attr("fill", "black")
         .text("Number of Songs");
+
+    // Add tooltip for the line chart
+    const lineTooltip = d3.select("body").append("div")
+        .attr("class", "line-tooltip")
+        .style("opacity", 0)
+        .style("position", "absolute")
+        .style("background", "white")
+        .style("border", "1px solid #ccc")
+        .style("padding", "5px")
+        .style("border-radius", "5px");
+
+    // Add a rectangle to capture mouse events for the line chart
+    lineSvg.append("rect")
+        .attr("width", lineWidth)
+        .attr("height", lineHeight)
+        .attr("fill", "none")
+        .attr("pointer-events", "all")
+        .on("mousemove", function (event) {
+            const [xPos] = d3.pointer(event);
+            const month = lineX.domain().find(d => Math.abs(lineX(d) - xPos) < (lineX.bandwidth() / 2));
+            const dataPoint = monthlyCountsArray.find(d => d.month === month);
+
+            if (dataPoint) {
+                lineTooltip.html(`Month: ${dataPoint.month}<br>Number of Songs: ${dataPoint.count}`)
+                    .style("left", (event.pageX + 5) + "px")
+                    .style("top", (event.pageY - 28) + "px")
+                    .style("opacity", 1);
+            }
+        })
+        .on("mouseout", function () {
+            lineTooltip.style("opacity", 0);
+        });
 });
