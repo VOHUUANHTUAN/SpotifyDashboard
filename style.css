@@ -86,3 +86,26 @@ header {
   color: black;
   z-index: 10;
 }
+
+.tooltip2 {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: white;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  color: black;
+}
+
+
+.rec {
+  height: 100px;
+  width: 200px;
+  background-color: #1db954;
+
+}
