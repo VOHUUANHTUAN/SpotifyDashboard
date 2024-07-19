@@ -57,6 +57,12 @@ d3.csv("spotify-2023.csv").then(data => {
         .nice()
         .range([barHeight, 0]);
 
+    // Tooltip
+    const tooltip1 = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip2")
+        .style("opacity", 0);
+
     // Draw the bars with hover effects and tooltip
     svg1.selectAll(".bar")
         .data(aggregatedNOACountsArray)
@@ -84,7 +90,7 @@ d3.csv("spotify-2023.csv").then(data => {
                 .duration(200)
                 .attr("fill", "steelblue")
                 .attr("opacity", 1);
-            tooltip2.style("opacity", 0);
+            tooltip1.style("opacity", 0);
         });
 
     // Add the x-axis
@@ -104,11 +110,7 @@ d3.csv("spotify-2023.csv").then(data => {
         .attr("y", -35)
         .text("Number of Tracks");
 
-    // Tooltip
-    const tooltip2 = d3.select("body")
-        .append("div")
-        .attr("class", "tooltip2")
-        .style("opacity", 0);
+
 
 
     // Calculate total streams by bpm
@@ -154,6 +156,12 @@ d3.csv("spotify-2023.csv").then(data => {
     // Format numbers with commas
     const formatNumber = d3.format(",");
 
+    // Tooltip
+    const tooltip2 = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip2")
+        .style("opacity", 0);
+
     // Draw the streams bars with hover effects and tooltip
     svg2.selectAll(".stream-bar")
         .data(aggregatedBPMStreamsArray)
@@ -171,7 +179,7 @@ d3.csv("spotify-2023.csv").then(data => {
                 .attr("fill", "orange")
                 .attr("opacity", 0.7);
             tooltip2.style("opacity", 1)
-                .html(`Year: ${d.released_year}<br>Streams: ${formatNumber(d.streams)}`)
+                .html(`BPM: ${d.bpm}<br>Total Streams: ${formatNumber(d.streams)}`)
                 .style("left", (event.pageX + 5) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
@@ -191,7 +199,8 @@ d3.csv("spotify-2023.csv").then(data => {
         .call(d3.axisBottom(xStream));
 
     // Add the y-axis for the streams chart
-    const yStreamTicks = [0, d3.max(aggregatedBPMStreamsArray, d => d.streams)];
+    const yStreamTicks = [...Array(1 + Math.ceil(d3.max(aggregatedBPMStreamsArray, d => d.streams)/20000000000)).keys()]
+        .map(d => d * 20000000000);
     svg2.append("g")
         .call(d3.axisLeft(yStream).tickValues(yStreamTicks).tickFormat(d => d3.format(",.2s")(d).replace('G', ' tỷ')))
         .append("text")
@@ -201,25 +210,5 @@ d3.csv("spotify-2023.csv").then(data => {
         .attr("y", -35)
         .attr("fill", "black")
         .text("Total Streams");
-    // Function to sort data by streams (descending)
-    function sortByStreams() {
-        aggregatedBPMStreamsArray.sort((a, b) => d3.descending(a.streams, b.streams));
-
-        xStream.domain(aggregatedBPMStreamsArray.map(d => d.released_year.toString()));
-
-        svg2.selectAll(".stream-bar")
-            .transition()
-            .duration(500)
-            .attr("x", d => xStream(d.released_year.toString()));
-
-        svg2.select(".x-stream-axis")
-            .transition()
-            .call(d3.axisBottom(xStream))
-            .selectAll("text")
-            .attr("transform", "rotate(-45)")
-            .style("text-anchor", "end");
-    }
-
-
 
 });
