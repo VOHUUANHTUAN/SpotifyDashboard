@@ -25,22 +25,22 @@ const svg2 = d3.select("#chart2")
 d3.csv("spotify-2023.csv").then(data => {
     // Calculate song counts by number of artists (NOA)
     const NOACounts = d3.rollup(data, v => v.length, d => d.artist_count);
-    const NOACountsArray = Array.from(NOACounts, ([artist_count, count]) => ({ artist_count, count }));
+    const NOACountsArray = Array.from(NOACounts, ([artist_count, song_count]) => ({ artist_count, song_count }));
 
     // Group number of artists > 3 into a single category with a range of years
     const groupedNOACounts = NOACountsArray.map(d => ({
-        artist_count: d.artist_count > 3 ? "4+" : d.artist_count,
-        count: d.count
+        artist_count: d.artist_count > 3 ? `4-${d3.max(NOACountsArray, d => d.artist_count)}` : d.artist_count,
+        song_count: d.song_count
     }));
 
     // Aggregate counts for grouped years
     const aggregatedNOACounts = d3.rollup(groupedNOACounts,
-        v => d3.sum(v, d => d.count),
+        v => d3.sum(v, d => d.song_count),
         d => d.artist_count
     );
 
     // Convert aggregated data back to array for visualization
-    let aggregatedNOACountsArray = Array.from(aggregatedNOACounts, ([artist_count, count]) => ({ artist_count, count }));
+    let aggregatedNOACountsArray = Array.from(aggregatedNOACounts, ([artist_count, song_count]) => ({ artist_count, song_count }));
 
     // Sort data by artist_count (ascending) initially
     aggregatedNOACountsArray.sort((a, b) => d3.ascending(a.artist_count, b.artist_count));
@@ -53,7 +53,7 @@ d3.csv("spotify-2023.csv").then(data => {
 
     // Set up the y scale for the bar chart
     const y = d3.scaleLinear()
-        .domain([0, d3.max(aggregatedNOACountsArray, d => d.count)])
+        .domain([0, d3.max(aggregatedNOACountsArray, d => d.song_count)])
         .nice()
         .range([barHeight, 0]);
 
@@ -69,9 +69,9 @@ d3.csv("spotify-2023.csv").then(data => {
         .enter().append("rect")
         .attr("class", "bar")
         .attr("x", d => x(d.artist_count.toString()))
-        .attr("y", d => y(d.count))
+        .attr("y", d => y(d.song_count))
         .attr("width", x.bandwidth())
-        .attr("height", d => barHeight - y(d.count))
+        .attr("height", d => barHeight - y(d.song_count))
         .attr("fill", "steelblue")
         .on("mouseover", function (event, d) {
             d3.select(this)
@@ -80,7 +80,7 @@ d3.csv("spotify-2023.csv").then(data => {
                 .attr("fill", "orange")
                 .attr("opacity", 0.7);
             tooltip2.style("opacity", 1)
-                .html(`Number of artists: ${d.artist_count}<br>Count: ${d.count}`)
+                .html(`Number of artists: ${d.artist_count}<br>Count: ${d.song_count}`)
                 .style("left", (event.pageX + 5) + "px")
                 .style("top", (event.pageY - 28) + "px");
         })
@@ -100,7 +100,7 @@ d3.csv("spotify-2023.csv").then(data => {
         .call(d3.axisBottom(x));
 
     // Add the y-axis
-    const yTicks = [...Array(1 + Math.ceil(d3.max(aggregatedNOACountsArray, d => d.count) / 100)).keys()].map(d => d * 100);
+    const yTicks = [...Array(1 + Math.ceil(d3.max(aggregatedNOACountsArray, d => d.song_count) / 100)).keys()].map(d => d * 100);
     svg1.append("g")
         .call(d3.axisLeft(y).tickValues(yTicks))
         .append("text")
@@ -123,14 +123,12 @@ d3.csv("spotify-2023.csv").then(data => {
         average_bpm: Math.floor(d.bpm / 50) * 50 + 25,
         streams: d.streams
     }));
-    console.log(groupedBPMStreams);
 
     // Aggregate streams for grouped bpm
     const aggregatedBPMStreams = d3.rollup(groupedBPMStreams,
         v => d3.sum(v, d => d.streams),
         d => d.bpm
     );
-    console.log(aggregatedBPMStreams);
 
     // Convert aggregated data back to array for visualization
     let aggregatedBPMStreamsArray = Array.from(aggregatedBPMStreams, ([bpm, streams]) => ({ bpm, streams }));
@@ -139,7 +137,6 @@ d3.csv("spotify-2023.csv").then(data => {
     aggregatedBPMStreamsArray.sort((a, b) => d3.ascending(
         parseInt(a.bpm.split("-")[0]), parseInt(b.bpm.split("-")[0])
     ));
-    console.log(aggregatedBPMStreamsArray);
 
     // Set up the x scale for the streams bar chart
     const xStream = d3.scaleBand()
