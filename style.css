@@ -103,11 +103,6 @@ header {
   color: black;
 }
 
-.rec {
-  height: 100px;
-  width: 200px;
-  background-color: #1db954;
-}
 .line-chart .line-tooltip {
   color: black;
   z-index: 10;

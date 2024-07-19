@@ -1,0 +1,26 @@
+.containertask {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 10%;
+}
+
+.rec {
+  background-color: #f0f0f0; /* Light gray background color */
+  padding: 20px; /* Space inside the box */
+  border-radius: 5px; /* Rounded corners */
+  text-align: center; /* Center the text */
+  width: 150px; /* Fixed width */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+  transition: transform 0.3s; /* Smooth hover effect */
+}
+
+.rec a {
+  text-decoration: none; /* Remove underline from links */
+  color: #333; /* Dark text color */
+  font-weight: bold; /* Bold text */
+}
+
+.rec:hover {
+  transform: translateY(-5px); /* Slight lift on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Stronger shadow on hover */
+}

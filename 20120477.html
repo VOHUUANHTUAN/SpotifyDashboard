@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Number of Songs by Key</title>
     <script src="https://d3js.org/d3.v6.min.js"></script>
     <style>
-         body {
+        body {
             background-image: url("background.jpeg");
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            height: 100%;
             margin: 0;
             color: white;
             display: flex;
@@ -19,15 +20,19 @@
             justify-content: center;
             align-items: center;
         }
+
         header {
-            margin-bottom: 20px; /* Optional: add margin to the bottom of the header */
+            margin-bottom: 20px;
+            /* Optional: add margin to the bottom of the header */
             text-align: center;
         }
+
         .titleofchart {
             text-align: center;
             margin: 10px 0;
             color: white;
         }
+
         .chart1,
         .chart2,
         .bar-chart {
@@ -38,43 +43,57 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             margin: 10px;
         }
+
         .header-title {
 
-            background-clip: text; /* Standard property */
-            -webkit-background-clip: text; /* Safari */
-            -webkit-text-fill-color:rgb(212, 246, 219); /* Make text color transparent to show gradient */
-            font-size: 2.5em; /* Adjust size as needed */
-            margin: 0; /* Remove default margin */
+            background-clip: text;
+            /* Standard property */
+            -webkit-background-clip: text;
+            /* Safari */
+            -webkit-text-fill-color: rgb(212, 246, 219);
+            /* Make text color transparent to show gradient */
+            font-size: 2.5em;
+            /* Adjust size as needed */
+            margin: 0;
+            /* Remove default margin */
         }
+
         .containerchart {
             display: flex;
-            justify-content: space-around;
-            flex-wrap: wrap;
+
             margin: 10px;
         }
+
         .chart {
             flex: 1;
             margin: 10px;
         }
+
         .bar {
             fill: rgb(216, 214, 86);
         }
+
         .bar:hover {
             fill: orange;
         }
+
         .tooltip {
             position: absolute;
             text-align: center;
-            max-width: 200px; /* Set a maximum width for the tooltip */
-            padding: 5px; /* Adjust padding as needed */
+            max-width: 200px;
+            /* Set a maximum width for the tooltip */
+            padding: 5px;
+            /* Adjust padding as needed */
             font: 12px sans-serif;
             background: lightsteelblue;
             border: 1px solid #333;
             border-radius: 5px;
             pointer-events: none;
             opacity: 0;
-            word-wrap: break-word; /* Ensure long words break to the next line */
+            word-wrap: break-word;
+            /* Ensure long words break to the next line */
         }
+
         .axis-label {
             font-size: 14px;
             font-weight: bold;
@@ -84,6 +103,7 @@
 <header>
     <h1 class="header-title">20120477: Domain Task 5 & 6</h1>
 </header>
+
 <body>
     <div class="containerchart">
         <div id="chart1" class="chart1">
@@ -97,10 +117,11 @@
 
     <script src="script_20120477.js">
         // Load data from CSV
-        
+
     </script>
 </body>
-</html> 
+
+</html>
 
 
 <!-- <!DOCTYPE html>
