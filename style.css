@@ -75,14 +75,46 @@ header {
 }
 
 .major {
-  background-color: rgb(133, 219, 185);
+  background-color: #00ff7f;
 }
 
 .minor {
-  background-color: rgb(156, 231, 94);
+  background-color: #698b69;
 }
 
 .tooltip {
   color: black;
   z-index: 10;
+}
+
+.tooltip2 {
+  position: absolute;
+  text-align: center;
+  width: auto;
+  height: auto;
+  padding: 5px;
+  font: 12px sans-serif;
+  background: white;
+  border: 0px;
+  border-radius: 8px;
+  pointer-events: none;
+  opacity: 0;
+  color: black;
+}
+
+.rec {
+  height: 100px;
+  width: 200px;
+  background-color: #1db954;
+}
+.line-chart .line-tooltip {
+  color: black;
+  z-index: 10;
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+  pointer-events: none;
+  opacity: 0;
 }
