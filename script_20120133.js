@@ -108,7 +108,7 @@ d3.csv("spotify-2023.csv").then(data => {
         .attr("x", -barHeight / 2)
         .attr("y", -35)
         .attr("fill", "black")
-        .text("Number of Tracks");
+        .text("Number of Songs");
 
     // Function to sort data by count (descending)
     function sortByCount() {
