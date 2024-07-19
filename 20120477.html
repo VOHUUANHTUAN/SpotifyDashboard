@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number of Songs by Key</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+         body {
+            background-image: url("background.jpeg");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            height: 100vh;
+            margin: 0;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        header {
+            margin-bottom: 20px; /* Optional: add margin to the bottom of the header */
+            text-align: center;
+        }
+        .titleofchart {
+            text-align: center;
+            margin: 10px 0;
+            color: white;
+        }
+        .chart1,
+        .chart2,
+        .bar-chart {
+            background-color: rgba(152, 251, 152, 0.1);
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px;
+        }
+        .header-title {
+
+            background-clip: text; /* Standard property */
+            -webkit-background-clip: text; /* Safari */
+            -webkit-text-fill-color:rgb(212, 246, 219); /* Make text color transparent to show gradient */
+            font-size: 2.5em; /* Adjust size as needed */
+            margin: 0; /* Remove default margin */
+        }
+        .containerchart {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 10px;
+        }
+        .chart {
+            flex: 1;
+            margin: 10px;
+        }
+        .bar {
+            fill: rgb(216, 214, 86);
+        }
+        .bar:hover {
+            fill: orange;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            max-width: 200px; /* Set a maximum width for the tooltip */
+            padding: 5px; /* Adjust padding as needed */
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 1px solid #333;
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+            word-wrap: break-word; /* Ensure long words break to the next line */
+        }
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<header>
+    <h1 class="header-title">20120477: Domain Task 5 & 6</h1>
+</header>
+<body>
+    <div class="containerchart">
+        <div id="chart1" class="chart1">
+            <h2 class="titleofchart">Number of Songs by Key</h2>
+        </div>
+        <div id="tooltip" class="tooltip"></div>
+        <div id="chart2" class="chart2">
+            <h2 class="titleofchart">Top 10 artists by streams</h2>
+        </div>
+    </div>
+
+    <script src="script_20120477.js">
+        // Load data from CSV
+        
+    </script>
+</body>
+</html> 
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top 10 Artists by Streams in 2023</title>
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+    <style>
+        .bar {
+            fill: steelblue;
+        }
+        .bar:hover {
+            fill: orange;
+        }
+        .tooltip {
+            position: absolute;
+            text-align: center;
+            width: 60px;
+            height: 28px;
+            padding: 2px;
+            font: 12px sans-serif;
+            background: lightsteelblue;
+            border: 1px solid #333;
+            border-radius: 5px;
+            pointer-events: none;
+            opacity: 0;
+        }
+        .axis-label {
+            font-size: 14px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="chart"></div>
+    <div id="tooltip" class="tooltip"></div>
+
+    <script>
+        // Load data from CSV
+        d3.csv("spotify-2023.csv").then(function(data) {
+            // Filter data for the year 2023
+            data = data.filter(d => d.released_year === "2023");
+
+            // Group data by artist(s)_name and calculate total streams
+            const artistStreams = d3.rollups(data, v => d3.sum(v, d => +d.streams), d => d["artist(s)_name"]);
+
+            // Sort by total streams in descending order
+            artistStreams.sort((a, b) => b[1] - a[1]);
+
+            // Get the top 10 artists
+            const top10Artists = artistStreams.slice(0, 10);
+
+            // Dimensions
+            const margin = { top: 20, right: 30, bottom: 40, left: 200 },
+                  width = 800 - margin.left - margin.right,
+                  height = 500 - margin.top - margin.bottom;
+
+            // Create SVG
+            const svg = d3.select("#chart")
+                          .append("svg")
+                          .attr("width", width + margin.left + margin.right)
+                          .attr("height", height + margin.top + margin.bottom)
+                          .append("g")
+                          .attr("transform", `translate(${margin.left},${margin.top})`);
+
+            // X Scale
+            const x = d3.scaleLinear()
+                        .domain([0, d3.max(top10Artists, d => d[1])])
+                        .nice()
+                        .range([0, width]);
+
+            // Y Scale
+            const y = d3.scaleBand()
+                        .domain(top10Artists.map(d => d[0]))
+                        .range([0, height])
+                        .padding(0.1);
+
+            // X Axis
+            svg.append("g")
+               .attr("class", "x axis")
+               .attr("transform", `translate(0,${height})`)
+               .call(d3.axisBottom(x))
+               .append("text")
+               .attr("class", "axis-label")
+               .attr("x", width / 2)
+               .attr("y", margin.bottom - 10)
+               .style("text-anchor", "middle")
+               .text("Number of Streams");
+
+            // Y Axis
+            svg.append("g")
+               .attr("class", "y axis")
+               .call(d3.axisLeft(y));
+
+            // Tooltip
+            const tooltip = d3.select("#tooltip");
+
+            // Add bars
+            svg.selectAll(".bar")
+               .data(top10Artists)
+               .enter().append("rect")
+               .attr("class", "bar")
+               .attr("x", 0)
+               .attr("y", d => y(d[0]))
+               .attr("width", d => x(d[1]))
+               .attr("height", y.bandwidth())
+               .on("mouseover", function(event, d) {
+                   tooltip.style("opacity", 1);
+                   tooltip.html(`Artist: ${d[0]}<br>Streams: ${d3.format(",")(d[1])}`)
+                          .style("left", (event.pageX + 5) + "px")
+                          .style("top", (event.pageY - 28) + "px");
+               })
+               .on("mouseout", function() {
+                   tooltip.style("opacity", 0);
+               });
+        }).catch(function(error) {
+            console.error('Error loading or parsing data:', error);
+        });
+    </script>
+</body>
+</html> -->
